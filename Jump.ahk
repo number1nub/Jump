@@ -4,7 +4,7 @@ Setworkingdir %A_ScriptDir%
 SetTitleMatchMode, 2
 OnExit("FadeOutGUI")
 
-global settings, limit, guiWidth, initGuiWidth, guiHwnd, incPixPerChar, breakLoop, configFile:=GetConfigDir() "\Settings.ini"
+global settings:=[], limit, guiWidth, initGuiWidth, guiHwnd, incPixPerChar, breakLoop, configFile:=GetConfigDir() "\Settings.ini"
 
 BuildTrayMenu()
 LoadSettings()
@@ -12,10 +12,10 @@ HandleArgs()
 
 Gui +LastFound +AlwaysOnTop -Caption +ToolWindow +border
 Gui, margin, 0, 5
-Gui, Color, %BackColor%
-Gui, Font, s11 w550 c%TextColor%, %font%
-Gui, Add, Text, vMyText w550 c%TextColor% w%guiWidth% gmainGuiClick center,
-Winset, Transparent, %Transparency%
+Gui, Color, % settings.BackColor
+Gui, Font, % "s11 w550 c" settings.TextColor, % settings.Font
+Gui, Add, Text, % "vMyText w550  gmainGuiClick center c" settings.TextColor " w" guiWidth,
+Winset, Transparent, % settings.Transparency
 FadeInGUI()
 
 loop
@@ -79,7 +79,7 @@ if (lookupLabel != "ERROR") {
 		lookupInput:=before lookup after
 		lookupInput := shortcutReplace(lookupInput)
 		if (!lookupPath) {
-			lookupPath := DefaultBrowser
+			lookupPath := settings.DefaultBrowser
 			isURLinput := true
 		}	
 		if lookupPath contains iexplore,chrome,firefox,www.,http://,.com,.net,.org
@@ -119,7 +119,7 @@ else {
 		bp:="-bp", wa:="-wa", ie:="-ie", wd:="-wd"
 		if InStr(shortcutSettings, bp) {
 			IniRead, bPath, %configFile%, shortcutSettings, %str%_Browser, Err
-			shortcut := (bPath = "Err" ? DefaultBrowser : bPath) " " shortcut
+			shortcut := (bPath = "Err" ? settings.DefaultBrowser : bPath) " " shortcut
 		}
 		if InStr(shortcutSettings, wa) {
 			IniRead, title, %configFile%, shortcutSettings, %str%_title, Err

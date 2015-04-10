@@ -1,8 +1,8 @@
 FadeOutGUI() {
-	if (FadeOnExit) {
+	if (settings.FadeOnExit) {
 		Y:=0
 		while(Y>(0-height)) {
-			Y:=Y-FadeSpeed
+			Y:=Y-settings.FadeSpeed
 			Gui, Show, y%Y% NoActivate
 			sleep 20
 		}

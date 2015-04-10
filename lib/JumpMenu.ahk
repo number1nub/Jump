@@ -3,14 +3,17 @@ JumpMenu() {
 	Menu, JumpMenu, Delete
 	Menu, JumpMenu, Add, Application Settings, jumpMenuCmd
 	Menu, JumpMenu, Add, Edit Shortcuts, jumpMenuCmd
+	Menu, JumpMenu, Add
 	Menu, JumpMenu, Add, Open Settings.ini, jumpMenuCmd
-	Menu, JumpMenu, Color, %BackColor%
+	Menu, JumpMenu, Color, % settings.BackColor
 	Menu, JumpMenu, Show
 	return
 }
 jumpMenuCmd() {
 	if (A_ThisMenuItem="Application Settings") {
 		EditSettings("Jump Launcher", configFile, 1, 1)
+		Run, % A_ScriptFullPath
+		ExitApp
 	}
 	else if (A_ThisMenuItem="Open Settings.ini") {
 		Run, *edit "%configFile%"

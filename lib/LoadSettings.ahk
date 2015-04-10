@@ -24,6 +24,6 @@ LoadSettings() {
 	}
 	for entry, defVal in settingList {
 		IniRead, %entry%, %configFile%, GlobalSettings, %entry%, %defVal%
-		settings[entry] := %entry%
+		settings.Insert(entry, %entry%)
 	}
 }

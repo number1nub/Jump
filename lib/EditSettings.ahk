@@ -25,7 +25,7 @@ EditSettings(ProgName, Inifile, OwnedBy=0, DisableGui=0, HelpText=0) {
 	Gui, Add, TreeView, x10 y75 w200 h282 0x400
 	Gui, Add, Edit, x215 y114 w340 h20,                           ;ahk_class Edit1
 	Gui, Add, Edit, x215 y174 w340 h160 ReadOnly,                 ;ahk_class Edit2
-	Gui, Add, Button, x250 y375 w70 h30 gExitSettings , E&xit     ;ahk_class Button1
+	Gui, Add, Button, x250 y375 w70 h30 gExitSettings, &Close     ;ahk_class Button1
 	Gui, Add, Button, x505 y88 gBtnBrowseKeyValue Hidden, B&rowse ;ahk_class Button2
 	Gui, Add, Button, x215 y334 gBtnDefaultValue, &Restore        ;ahk_class Button3
 	Gui, Add, DateTime, x215 y114 w340 h20 Hidden,                ;ahk_class SysDateTimePick321

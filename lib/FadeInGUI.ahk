@@ -1,11 +1,11 @@
 FadeInGUI() {
-	if (settings.FadeOnShow && settings.FadeSpeed > 0) {
+	if (settings.FadeOnShow) {
 		Gui, Show, y-50
-		WinGetPos,,,,height, A
+		WinGetPos,,,, height, A
 		Y := -height
-		Gui, Show, xCenter y%Y% w%guiWidth%, %A_ScriptFullPath%
+		Gui, Show, % "xCenter y" Y " w" settings.guiWidth, % settings.Title
 		while (Y < -settings.FadeSpeed) {
-			Y := Y + settings.FadeSpeed
+			Y += settings.FadeSpeed
 			Gui, Show, y%Y%
 			sleep 20
 		}

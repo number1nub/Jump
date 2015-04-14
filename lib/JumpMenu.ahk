@@ -1,29 +1,31 @@
 JumpMenu() {
 	Menu, JumpMenu, Add
 	Menu, JumpMenu, Delete
-	Menu, JumpMenu, Add, Application Settings, jumpMenuCmd
-	Menu, JumpMenu, Add, Edit Shortcuts, jumpMenuCmd
+	Menu, JumpMenu, Add, Application Settings, JumpMenuCmd
 	Menu, JumpMenu, Add
-	Menu, JumpMenu, Add, Open Settings.ini, jumpMenuCmd
+	Menu, JumpMenu, Add, Quick Shortcut Editor, JumpMenuCmd
+	Menu, JumpMenu, Add, Open the User Settings File, JumpMenuCmd
 	Menu, JumpMenu, Color, % settings.BackColor
 	Menu, JumpMenu, Show
 	return
 }
-jumpMenuCmd() {
+
+JumpMenuCmd() {
 	if (A_ThisMenuItem="Application Settings") {
-		EditSettings("Jump Launcher", configFile, 1, 1)
+		EditSettings("Jump Launcher", settings.cfgPath, 1, 1)
 		Run, % A_ScriptFullPath
 		ExitApp
 	}
-	else if (A_ThisMenuItem="Open Settings.ini") {
-		Run, *edit "%configFile%"
+	else if (A_ThisMenuItem="Open the User Settings File") {
+		Run, % "*edit " settings.cfgPath
+		ExitApp
 	}
-	else if (A_ThisMenuItem="Edit Shortcuts") {
+	else if (A_ThisMenuItem="Quick Shortcut Editor") {
 		if (FileExist("Config Edit.ahk"))
-			Run, "Config Edit.ahk" "%configFile%"
+			Run, % """Config Edit.ahk"" """ settings.cfgPath """"
 		else {
 			m("Missing shortcut editor addin...")
-			Run, *edit "%configFile%"
+			Run, % "*edit " settings.cfgPath
 		}
 	}
 }

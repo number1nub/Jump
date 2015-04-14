@@ -1,6 +1,6 @@
 decrementWidth() {
-	guiWidth := guiWidth - incPixPerChar
-	initGuiWidth := initGuiWidth - incPixPerChar
-	Gui, Show, w%guiWidth% xCenter
-	GuiControl, Move, MyText, W%guiWidth%
+	settings.guiWidth -= settings.incPix
+	;~ settings.initGuiW -= settings.incPix
+	Gui, Show, % "xCenter w " settings.guiWidth
+	GuiControl, Move, MyText, % "w" settings.guiWidth
 }

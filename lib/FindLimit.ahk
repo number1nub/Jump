@@ -1,6 +1,3 @@
-findLimit(initGuiWidth, addPixels) {
-	if ((initGuiWidth / addPixels) - round(initGuiWidth / addPixels) = 0)
-		return (initGuiWidth / addPixels)
-	else
-		return (initGuiWidth/addPixels - 1)
+FindLimit(initW, incPix) {	
+	return (initW/incPix - Round(initW/incPix)) = 0 ? initW/incPix : (initW/incPix-1)
 }

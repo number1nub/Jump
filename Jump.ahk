@@ -4,7 +4,7 @@ Setworkingdir %A_ScriptDir%
 SetTitleMatchMode, 2
 OnExit("FadeOutGUI")
 
-global settings:=[], limit, guiWidth, initGuiWidth, guiHwnd, incPixPerChar, breakLoop, configFile:=GetConfigDir() "\Settings.ini"
+global settings:=[], breakLoop
 
 BuildTrayMenu()
 LoadSettings()
@@ -14,7 +14,7 @@ Gui +LastFound +AlwaysOnTop -Caption +ToolWindow +border
 Gui, margin, 0, 5
 Gui, Color, % settings.BackColor
 Gui, Font, % "s11 w550 c" settings.TextColor, % settings.Font
-Gui, Add, Text, % "vMyText w550  gmainGuiClick center c" settings.TextColor " w" guiWidth,
+Gui, Add, Text, % "vMyText w550  gmainGuiClick center c" settings.TextColor " w" settings.guiWidth,
 Winset, Transparent, % settings.Transparency
 FadeInGUI()
 
@@ -28,12 +28,12 @@ return
 
 evaluate:
 if (!str) {	; Blank input --> perform action specified by NoInputAction setting		
-	if (NoInputAction = "S")a
-		run, edit %configFile%
+	if (NoInputAction = "S")
+		run, % "*edit " settings.cfgPath
 	else if (NoInputAction = "E")
-		run, edit %A_ScriptFullPath%
+		run, % "*edit " A_ScriptFullPath
 	else {
-		IniRead, str, %configFile%, InternalSettings, LastTrigger, Err
+		IniRead, str, % settings.cfgPath, InternalSettings, LastTrigger, Err
 		if (str = "Err") {
 			GuiControl,, MyText, ???
 			sleep 400
@@ -41,7 +41,6 @@ if (!str) {	; Blank input --> perform action specified by NoInputAction setting
 		}
 	}
 }
-
 if (fromHistory) {
 	origStr := LastTrigger
 	str := LastInputLabel
@@ -58,21 +57,17 @@ if (fromHistory) {
 	lookup := SubStr(str, lookupLabel.Len+1)
 }
 else {
-	IniRead, lookupLabel, %configFile%, lookups, %str%, ERROR
+	IniRead, lookupLabel, % settings.cfgPath, lookups, %str%, ERROR
 	origStr := str
 	if (lookupLabel != "ERROR") {
-		IniRead, lookupInput, %configFile%, lookupSettings, %str%_input, %A_Space%
-		IniRead, lookupPath, %configFile%, lookupSettings, %str%_path, %A_Space%	
+		IniRead, lookupInput, % settings.cfgPath, lookupSettings, %str%_input, %A_Space%
+		IniRead, lookupPath, % settings.cfgPath, lookupSettings, %str%_path, %A_Space%	
 		showLabel(lookupLabel)
 	}
 }
-
 isURLinput := false
-
-;{````  Lookup  ````}
-if (lookupLabel != "ERROR") {
+if (lookupLabel != "ERROR") {	; Lookup
 	GoSub inputLookup
-	
 	if (lookup) {
 		historyExecute:
 		position:=InStr(lookupInput, "[lookup]"), position-=1, before:=SubStr(lookupInput, 1, position), position+=9, after:=SubStr(lookupInput, position,999)
@@ -95,17 +90,15 @@ if (lookupLabel != "ERROR") {
 			StringReplace, lookupInput, lookupInput, #, `%23
 		}
 		LastInput := "", FromHistory := false
-		IniWrite, %origStr%, %configFile%, InternalSettings, LastTrigger
-		IniWrite, "%lookupLabel%", %configFile%, InternalSettings, LastLookupLabel
-		IniWrite, %lookupInput%, %configFile%, InternalSettings, LastInput
-		IniWrite, L, %configFile%, InternalSettings, LastType
+		IniWrite, %origStr%, % settings.cfgPath, InternalSettings, LastTrigger
+		IniWrite, "%lookupLabel%", % settings.cfgPath, InternalSettings, LastLookupLabel
+		IniWrite, %lookupInput%, % settings.cfgPath, InternalSettings, LastInput
+		IniWrite, L, % settings.cfgPath, InternalSettings, LastType
 		Run %lookupPath% `"%lookupInput%`"
 	}
 }
-;}	
-;{````  Shortcut  ````}
-else {
-	IniRead, shortcut, %configFile%, shortcuts, %str%, ERROR
+else {	; Shortcut
+	IniRead, shortcut, % settings.cfgPath, shortcuts, %str%, ERROR
 	if (shortcut="ERROR") {
 		if (str) {
 			GuiControl,, MyText, ???
@@ -113,16 +106,16 @@ else {
 		}
 		ExitApp
 	}
-	IniRead, shortcutSettings, %configFile%, shortcutSettings, %str%, 0
+	IniRead, shortcutSettings, % settings.cfgPath, shortcutSettings, %str%, 0
 	if (shortcutSettings) {
 		cancelRun := false
 		bp:="-bp", wa:="-wa", ie:="-ie", wd:="-wd"
 		if InStr(shortcutSettings, bp) {
-			IniRead, bPath, %configFile%, shortcutSettings, %str%_Browser, Err
+			IniRead, bPath, % settings.cfgPath, shortcutSettings, %str%_Browser, Err
 			shortcut := (bPath = "Err" ? settings.DefaultBrowser : bPath) " " shortcut
 		}
 		if InStr(shortcutSettings, wa) {
-			IniRead, title, %configFile%, shortcutSettings, %str%_title, Err
+			IniRead, title, % settings.cfgPath, shortcutSettings, %str%_title, Err
 			if (title = "Err") {
 				msgbox Error. No title specified for activating %shortcut%
 				ExitApp
@@ -145,7 +138,7 @@ else {
 			}
 		}
 		if InStr(shortcutSettings, wd) {
-			IniRead, workingDir, %configFile%, shortcutSettings, %str%_WorkingDir
+			IniRead, workingDir, % settings.cfgPath, shortcutSettings, %str%_WorkingDir
 			if (workingDir = "ERROR")	;choose WorkingDir automoatically. This does not work if you use parameters.
 				SplitPath, shortcut, ,workingDir
 			shortcut := shortcutReplace(shortcut)
@@ -157,12 +150,11 @@ else {
 		shortcut := shortcutReplace(shortcut)
 		run, %shortcut%
 	}
-	IniWrite, %str%, %configFile%, InternalSettings, LastTrigger	
-	IniWrite, % "", %configFile%, InternalSettings, LastLookupLabel
-	IniWrite, % "", %configFile%, InternalSettings, LastInput
-	IniWrite, S, %configFile%, InternalSettings, LastType
+	IniWrite, %str%, % settings.cfgPath, InternalSettings, LastTrigger	
+	IniWrite, % "", % settings.cfgPath, InternalSettings, LastLookupLabel
+	IniWrite, % "", % settings.cfgPath, InternalSettings, LastInput
+	IniWrite, S, % settings.cfgPath, InternalSettings, LastType
 }
-;}
 ExitApp
 
 
@@ -173,7 +165,7 @@ length := char.Len
 if (length = 0) {	;Typed an escape char
 	if GetKeyState("Backspace","P")
 		goSub, Backspace
-	else						;a.k.a the user pressed enter, or space
+	else	;pressed enter or space
 		breakLoop := true
 }
 charNumber := Asc(char)		
@@ -216,20 +208,20 @@ return
 
 
 incrementWidth:
-guiWidth := guiWidth + incPixPerChar
-initGuiWidth := initGuiWidth + incPixPerChar
-Gui, Show, w%guiWidth% xCenter
-GuiControl, Move, MyText, W%guiWidth%
+settings.guiWidth += settings.incPix
+;~ settings.initGuiW += settings.incPix
+Gui, Show, % "xCenter w " settings.guiWidth
+GuiControl, Move, MyText, % "w" settings.guiWidth
 return
 
 
 InsertHistory:
-IniRead, lastType, %configFile%, InternalSettings, LastType, Err
-IniRead, str, %configFile%, InternalSettings, LastTrigger, Err	
+IniRead, lastType, % settings.cfgPath, InternalSettings, LastType, Err
+IniRead, str, % settings.cfgPath, InternalSettings, LastTrigger, Err	
 if (str != "Err") {
 	if (lastType = "L"){
-		IniRead, LastInput, %configFile%, InternalSettings, LastInput, % ""
-		IniRead, LastInputLabel, %configFile%, InternalSettings, LastLookupLabel, % ""
+		IniRead, LastInput, % settings.cfgPath, InternalSettings, LastInput, % ""
+		IniRead, LastInputLabel, % settings.cfgPath, InternalSettings, LastLookupLabel, % ""
 		fromHistory := (LastInput && LastInputLabel) ? 1 : ""
 	}
 	GuiControl,, MyText, % fromHistory ? LastInputLabel : str

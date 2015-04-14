@@ -1,5 +1,5 @@
 GuiDropFiles(hwnd, files, ctlId) {
-	IniRead, shortcut, %configFile%, shortcuts, %str%
+	IniRead, shortcut, % settings.cfgPath, shortcuts, %str%
 	if (shortcut="ERROR") {
 		if (str) {
 			GuiControl,, MyText, ???

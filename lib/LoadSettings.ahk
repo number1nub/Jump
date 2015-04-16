@@ -23,7 +23,7 @@ LoadSettings(fPath="") {
 	if (!FileExist(settings.cfgPath))
 		CreateConfig()
 	for settingName, defaultVal in defaults {
-		IniRead, %settingName%, % settings.cfgPath, defaults, %settingName%, %defaultVal%
+		IniRead, %settingName%, % settings.cfgPath, GlobalSettings, %settingName%, %defaultVal%
 		settings.Insert(settingName, %settingName%)
 	}
 }

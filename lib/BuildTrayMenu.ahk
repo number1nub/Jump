@@ -11,5 +11,5 @@ BuildTrayMenu() {
 	if (A_IsCompiled)
 		Menu, Tray, Icon, % A_ScriptFullpath, -159
 	else
-		Menu, Tray, Icon, % FileExist(mIco:=A_ScriptDir "\TheCloser.ico") ? mIco : ""
+		Menu, Tray, Icon, % FileExist(mIco:=A_ScriptDir "\res\Jump.ico") ? mIco : ""
 }

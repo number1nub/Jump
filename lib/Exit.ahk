@@ -1,3 +1,3 @@
 Exit(reason) {
-	Exit
+	ExitApp
 }

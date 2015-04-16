@@ -5,7 +5,7 @@ JumpMenu() {
 	Menu, JumpMenu, Add
 	Menu, JumpMenu, Add, Quick Shortcut Editor, JumpMenuCmd
 	Menu, JumpMenu, Add, Open the User Settings File, JumpMenuCmd
-	Menu, JumpMenu, Color, % settings.BackColor
+	;~ Menu, JumpMenu, Color, % settings.BackColor
 	Menu, JumpMenu, Show
 	return
 }

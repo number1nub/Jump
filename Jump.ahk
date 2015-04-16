@@ -27,7 +27,7 @@ ExitApp
 return
 
 evaluate:
-if (!str) {	; Blank input --> perform action specified by NoInputAction setting		
+if (!str) {	;Blank input --> perform action specified by NoInputAction setting		
 	if (NoInputAction = "S")
 		run, % "*edit " settings.cfgPath
 	else if (NoInputAction = "E")

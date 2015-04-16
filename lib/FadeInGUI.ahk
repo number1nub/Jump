@@ -9,7 +9,7 @@ FadeInGUI() {
 			Gui, Show, y%Y%
 			sleep 20
 		}
-	}
+	}	
 	Gui, Show, y0 NoActivate
 	gui, flash
 	return WinExist()

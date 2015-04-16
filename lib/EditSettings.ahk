@@ -273,7 +273,7 @@ EditSettings(ProgName, Inifile, OwnedBy=0, DisableGui=0, HelpText=0) {
 			Gui, %OwnedBy%:,Show
 		}
 		Gui, Destroy
-		ifNotEqual, HelpText, 0
+		if (HelpText)
 			Hotkey, F1, Off
 		return
 

@@ -1,4 +1,4 @@
 showLabel(luLbl) {
 	global str := luLbl
-	GuiControl,, MyText, %str%
+	GuiControl,, Static1, %str%
 }

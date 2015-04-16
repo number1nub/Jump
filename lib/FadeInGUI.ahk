@@ -1,9 +1,16 @@
 FadeInGUI() {
+	Gui +LastFound +AlwaysOnTop -Caption +ToolWindow +border
+	Gui, margin, 0, 5
+	Gui, Color, % settings.BackColor
+	Gui, Font, % "s11 w550 c" settings.TextColor, % settings.Font
+	Gui, Add, Text, % "w550 gmainGuiClick center c" settings.TextColor " w" settings.guiWidth,
+	Winset, Transparent, % settings.Transparency
+	
 	if (settings.FadeOnShow) {
 		Gui, Show, y-50
-		WinGetPos,,,, height, A
+		WinGetPos,,,, height
 		Y := -height
-		Gui, Show, % "xCenter y" Y " w" settings.guiWidth, % settings.Title
+		Gui, Show, % "xCenter y" Y " w" settings.guiWidth
 		while (Y < -settings.FadeSpeed) {
 			Y += settings.FadeSpeed
 			Gui, Show, y%Y%

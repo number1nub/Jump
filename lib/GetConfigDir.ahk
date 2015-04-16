@@ -1,4 +1,4 @@
-GetConfigDir(default:="%APPDATA%\WSNHapps\JumpLauncher", overwrite:="") {
+GetConfigDir(default:="%APPDATA%\WSNHapps\Jump Launcher", overwrite:="") {
 	regPath := "Software\WSNHapps\JumpLauncher"
 	RegRead, cfgDir, HKCU, %regPath%, ConfigPath
 	if (ErrorLevel || !cfgDir || (cfgDir!=default && overwrite))

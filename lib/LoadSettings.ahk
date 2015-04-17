@@ -1,12 +1,12 @@
 LoadSettings(fPath="") {
 	initW  := 96
-	incPix := 6
+	incPix := 8
 	dir := ExpandEnv(GetConfigDir(fPath?fPath:"", fPath?1:""))
 	settings := { cfgDir:   dir
 				, cfgPath:  dir "\Settings.ini"
 				, initGuiW: initW
 				, incPix:   incPix
-				, limit:    ((initW/incPix)-Round(initW/incPix)=0 ? (initW/incPix) : (initW/incPix-1))-1
+				, limit:    ((initW/incPix)-Round(initW/incPix)=0 ? (initW/incPix) : (initW/incPix-1))
 				, guiWidth: (2*incPix+initW) }
 	
 	defaults := { DefaultBrowser: "iexplore.exe"

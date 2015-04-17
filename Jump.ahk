@@ -17,7 +17,7 @@ until breakLoop
 
 GoSub, evaluate
 ExitApp
-return
+
 
 evaluate:
 {
@@ -149,6 +149,7 @@ evaluate:
 		IniWrite, % "", % settings.cfgPath, InternalSettings, LastInput
 		IniWrite, S, % settings.cfgPath, InternalSettings, LastType
 	}
+	return
 }
 
 

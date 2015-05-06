@@ -1,11 +1,11 @@
 #SingleInstance Force
-SetControlDelay, 0
-Setworkingdir %A_ScriptDir%
+SetWorkingDir, %A_ScriptDir%
 SetTitleMatchMode, 2
-OnExit("FadeOutGUI")
+SetControlDelay, 0
 
 global settings:=[], breakLoop
 
+OnExit("FadeOutGUI")
 BuildTrayMenu()
 LoadSettings("%APPDATA%\WSNHapps\Jump Launcher")
 HandleArgs()
@@ -21,7 +21,7 @@ ExitApp
 
 evaluate:
 {
-	if (!str) {	;Blank input --> perform action specified by NoInputAction setting		
+	if (!str) {		;Blank input --> Perform action specified by NoInputAction		
 		if (NoInputAction = "S")
 			run, % "*edit " settings.cfgPath
 		else if (NoInputAction = "E")
@@ -36,23 +36,21 @@ evaluate:
 		}
 	}
 	if (fromHistory) {
-	origStr := LastTrigger
-		str := LastInputLabel
-		str .= LastInput
+		origStr:=LastTrigger, str:=LastInputLabel, str.=LastInput
 		if (str.Len > settings.limit) {
-			if ((str.Len - LastInput.Len) < settings.limit)
-				overFlowChars := str.Len - settings.limit
+			if ((str.Len-LastInput.Len) < settings.limit)
+				overFlowChars := str.Len-settings.limit
 			else
 				overFlowChars := LastInput.Len
 			Loop, %overFlowChars%
-				gosub,incrementWidth
+				gosub, incrementWidth
 		}
 		GuiControl,, Static1, %str%
 		lookup := SubStr(str, lookupLabel.Len+1)
 	}
 	else {
 		IniRead, lookupLabel, % settings.cfgPath, lookups, %str%, ERROR
-	origStr := str
+		origStr := str
 		if (lookupLabel != "ERROR") {
 			IniRead, lookupInput, % settings.cfgPath, lookupSettings, %str%_input, %A_Space%
 			IniRead, lookupPath, % settings.cfgPath, lookupSettings, %str%_path, %A_Space%	
@@ -149,7 +147,7 @@ evaluate:
 		IniWrite, % "", % settings.cfgPath, InternalSettings, LastInput
 		IniWrite, S, % settings.cfgPath, InternalSettings, LastType
 	}
-	return
+	ExitApp
 }
 
 
@@ -216,12 +214,13 @@ incrementWidth:
 
 InsertHistory:
 {
-	IniRead, lastType, % settings.cfgPath, InternalSettings, LastType, Err
-	IniRead, str, % settings.cfgPath, InternalSettings, LastTrigger, Err
-	if (str != "Err") {
-		if (lastType = "L") {
-			IniRead, LastInput, % settings.cfgPath, InternalSettings, LastInput, % ""
-			IniRead, LastInputLabel, % settings.cfgPath, InternalSettings, LastLookupLabel, % ""
+	sect:="InternalSettings", cfgFPath:=settings.cfgPath
+	IniRead, lastType, %cfgFPath%, %sect%, LastType
+	IniRead, str, %cfgFPath%, %sect%, LastTrigger
+	if (str != "ERROR") {
+		if (Format("{1:U}", lastType) == "L") {
+			IniRead, LastInput, %cfgFPath%, %sect%, LastInput, % ""
+			IniRead, LastInputLabel, %cfgFPath%, %sect%, LastLookupLabel, % ""
 			fromHistory := (LastInput && LastInputLabel) ? 1 : ""
 		}
 		GuiControl,, Static1, % fromHistory ? LastInputLabel : str

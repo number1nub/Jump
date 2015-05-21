@@ -1,6 +1,6 @@
-FadeOutGUI() {
+FadeOutGUI(reload:="") {
 	if (settings.FadeOnExit) {
-		WinGetPos,,,, height, %A_ScriptName%
+		WinGetPos,,,, height, ahk_id %WinID%
 		Y := 0
 		while(Y > (0-height)) {
 			Y := Y - settings.FadeSpeed
@@ -8,5 +8,6 @@ FadeOutGUI() {
 			sleep 20
 		}
 	}
-	ExitApp
+	if (!reload)
+		ExitApp
 }

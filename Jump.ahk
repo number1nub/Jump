@@ -1,15 +1,17 @@
-#SingleInstance Force
+#SingleInstance, Ignore
 SetWorkingDir, %A_ScriptDir%
 SetTitleMatchMode, 2
 SetControlDelay, 0
-
-global settings:=[], breakLoop
-
 OnExit("FadeOutGUI")
-BuildTrayMenu()
+
+global settings:=[], breakLoop, Version
+
+TrayMenu()
 LoadSettings("%APPDATA%\WSNHapps\Jump Launcher")
 HandleArgs()
 FadeInGUI()
+Hotkeys("Up", "InsertHistory")
+Hotkeys("Up", "DeadEnd", "Jump Launcher Settings")
 
 loop
 	Gosub, inputChar
@@ -21,7 +23,7 @@ ExitApp
 
 evaluate:
 {
-	if (!str) {		;Blank input --> Perform action specified by NoInputAction		
+	if (!str) {		;Blank input --> Perform action specified by NoInputAction
 		if (NoInputAction = "S")
 			run, % "*edit " settings.cfgPath
 		else if (NoInputAction = "E")
@@ -53,7 +55,7 @@ evaluate:
 		origStr := str
 		if (lookupLabel != "ERROR") {
 			IniRead, lookupInput, % settings.cfgPath, lookupSettings, %str%_input, %A_Space%
-			IniRead, lookupPath, % settings.cfgPath, lookupSettings, %str%_path, %A_Space%	
+			IniRead, lookupPath, % settings.cfgPath, lookupSettings, %str%_path, %A_Space%
 			showLabel(lookupLabel)
 		}
 	}
@@ -68,13 +70,13 @@ evaluate:
 			if (!lookupPath) {
 				lookupPath := settings.DefaultBrowser
 				isURLinput := true
-			}	
+			}
 			if lookupPath contains iexplore,chrome,firefox,www.,http://,.com,.net,.org
-				isURLinput := true						
-			SplitPath, lookupPath, ,workingDir, , ,outDrive						
+				isURLinput := true
+			SplitPath, lookupPath, ,workingDir, , ,outDrive
 			; Note that the "\" can't be included at the beginning of lookuppath in the ini file-- it must be added here
 			if (!outDrive)
-				workingDir := A_workingDir . "\" . workingDir 							
+				workingDir := A_workingDir . "\" . workingDir
 			lookupPath := shortcutReplace(lookupPath)
 			; Handle encoding HTML characters for URLs
 			if (isURLinput) {
@@ -113,7 +115,7 @@ evaluate:
 					ExitApp
 				}
 				else {
-					TTMbu := A_TitleMatchMode					
+					TTMbu := A_TitleMatchMode
 					SetTitleMatchMode, RegEx
 					IfWinExist, i)%title%
 					{
@@ -142,7 +144,7 @@ evaluate:
 			shortcut := shortcutReplace(shortcut)
 			run, %shortcut%
 		}
-		IniWrite, %str%, % settings.cfgPath, InternalSettings, LastTrigger	
+		IniWrite, %str%, % settings.cfgPath, InternalSettings, LastTrigger
 		IniWrite, % "", % settings.cfgPath, InternalSettings, LastLookupLabel
 		IniWrite, % "", % settings.cfgPath, InternalSettings, LastInput
 		IniWrite, S, % settings.cfgPath, InternalSettings, LastType
@@ -153,7 +155,6 @@ evaluate:
 
 inputChar:
 {
-	Hotkey, Up, InsertHistory, On
 	Input, char, L1 M,{enter}{space}{backspace}
 	length := char.Len
 	if (length = 0) {	;Typed an escape char
@@ -162,9 +163,9 @@ inputChar:
 		else	;pressed enter or space
 			breakLoop := true
 	}
-	charNumber := Asc(char)		
+	charNumber := Asc(char)
 	if (charNumber = 27)	; Escape
-		ExitApp	
+		ExitApp
 	if (charNumber = 22) {	;<Ctrl + V> -- Paste input
 		str := str . clipboard
 		if (str.Len > settings.limit) {		;Input is longer than GUI
@@ -177,9 +178,9 @@ inputChar:
 		}
 		GuiControl,, Static1, %str% 	 ;Show change
 	}
-	else if (charNumber = 3) {	;<Ctrl + C> -- Copy input 
+	else if (charNumber = 3) {	;<Ctrl + C> -- Copy input
 		clipboard := str
-		str = copied 
+		str = copied
 		GuiControl,, Static1, %str%
 		sleep 600
 		ExitApp
@@ -203,6 +204,7 @@ backspace:
 	return
 }
 
+
 incrementWidth:
 {
 	settings.guiWidth += settings.incPix
@@ -211,6 +213,7 @@ incrementWidth:
 	GuiControl, Move, Static1, % "w" settings.guiWidth
 	return
 }
+
 
 InsertHistory:
 {
@@ -244,10 +247,10 @@ inputChar4Lookup:
 			breakLoop := true
 			Goto, end_of_subroutine
 		}
-	}			
-	charNumber := Asc(char)			;this returns whatever ascii # goes to the character in %char%	
+	}
+	charNumber := Asc(char)			;this returns whatever ascii # goes to the character in %char%
 	if (charNumber = 27) 				;if the character is the ESC key
-		ExitApp	
+		ExitApp
 	else if (charNumber = 22) {			;control-v			this section performs as paste from %clipboard%
 		str .= clipboard
 		if (str.Len > settings.limit) {		;if user's input is longer than the gui. (width of a Courier character = 8pixels)
@@ -291,8 +294,8 @@ inputLookup:
 
 
 #Include <Anchor>
-#Include <BuildTrayMenu>
-#Include <class DefaultBase>
+#Include <Args>
+#Include <class StringBase>
 #Include <CreateConfig>
 #Include <decrementWidth>
 #Include <EditSettings>
@@ -305,12 +308,14 @@ inputLookup:
 #Include <GuiContextMenu>
 #Include <GuiDropFiles>
 #Include <HandleArgs>
+#Include <Hotkeys>
 #Include <InvBase64>
 #Include <JumpMenu>
 #Include <LoadSettings>
 #Include <LoadUserVars>
 #Include <m>
 #Include <mainGuiClick>
-#Include <params>
+#Include <MenuAction>
 #Include <ShortcutReplace>
 #Include <showLabel>
+#Include <TrayMenu>

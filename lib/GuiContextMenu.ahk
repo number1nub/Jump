@@ -1,3 +1,4 @@
 GuiContextMenu(hwnd, ctlId, eventinfo) {
-	JumpMenu()
+	if (hwnd = WinID)
+		JumpMenu()
 }

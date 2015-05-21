@@ -1,7 +1,9 @@
 HandleArgs() {
-	loop %0%
-		paramList .= (paramList ? " " : "") %a_index%
-	p := params(paramList)
+	if (%0% = 0)
+		return m("No args")
+	Loop %0%
+		argStr .= " " %A_Index%
+	p := Args(argStr)
 	if (p.Set || p.S || p.Settings) {
 		try
 			Run, %  "*edit """ settings.cfgPath """"

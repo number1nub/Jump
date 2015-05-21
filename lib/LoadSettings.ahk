@@ -2,6 +2,7 @@ LoadSettings(fPath="") {
 	initW  := 96
 	incPix := 8
 	dir := ExpandEnv(GetConfigDir(fPath?fPath:"", fPath?1:""))
+	
 	settings := { cfgDir:   dir
 				, cfgPath:  dir "\Settings.ini"
 				, initGuiW: initW
@@ -22,6 +23,7 @@ LoadSettings(fPath="") {
 	
 	if (!FileExist(settings.cfgPath))
 		CreateConfig()
+	
 	for settingName, defaultVal in defaults {
 		IniRead, %settingName%, % settings.cfgPath, GlobalSettings, %settingName%, %defaultVal%
 		settings.Insert(settingName, %settingName%)

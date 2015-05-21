@@ -1,12 +1,13 @@
-FadeInGUI() {
-	Gui +LastFound +AlwaysOnTop -Caption +ToolWindow +border
-	Gui, margin, 0, 5
+FadeInGUI(instant:="") {
+	Gui, Margin, 0, 5
 	Gui, Color, % settings.BackColor
 	Gui, Font, % "s11 w550 c" settings.TextColor, % settings.Font
+	Gui +LastFound +AlwaysOnTop -Caption +ToolWindow +Border +hwndhwnd
+	
 	Gui, Add, Text, % "w550 gmainGuiClick center c" settings.TextColor " w" settings.guiWidth,
 	Winset, Transparent, % settings.Transparency
 	
-	if (settings.FadeOnShow) {
+	if (settings.FadeOnShow && !instant) {
 		Gui, Show, y-50
 		WinGetPos,,,, height
 		Y := -height
@@ -16,8 +17,8 @@ FadeInGUI() {
 			Gui, Show, y%Y%
 			sleep 20
 		}
-	}	
-	Gui, Show, y0 NoActivate
-	gui, flash
-	return WinExist()
+	}
+	Gui, Show, y0 NA, Jump Launcher
+	Gui, Flash
+	return hwnd
 }

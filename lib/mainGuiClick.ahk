@@ -1,4 +1,4 @@
-mainGuiClick(ctrlId, event) {
+MainGuiClick(ctrlId, event) {
 	if (event != "DoubleClick")
 		return
 	action := settings.DClickAction = "E" ? "*edit """ A_ScriptFullPath """"
@@ -6,6 +6,6 @@ mainGuiClick(ctrlId, event) {
 			: settings.DClickAction = "A" ? EditSettings("Jump Launcher", settings.cfgPath, 1, 1)
 			: settings.DClickAction = "S" ? "*edit """ settings.cfgPath """"
 			: ""
-	run, % action ? action : A_ScriptFullPath
+	Run, % action ? action : A_ScriptFullPath
 	ExitApp
 }

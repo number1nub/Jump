@@ -13,4 +13,6 @@ TrayMenu() {
 		Menu, Tray, Icon, % A_ScriptFullpath, -159
 	else
 		Menu, Tray, Icon, % FileExist(mIco:=A_ScriptDir "\res\Jump.ico") ? mIco : ""
+	
+	TrayTip()
 }

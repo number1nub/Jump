@@ -2,14 +2,15 @@
 SetWorkingDir, %A_ScriptDir%
 SetTitleMatchMode, 2
 SetControlDelay, 0
+SetBatchLines, -1
+
+global settings:=[], breakLoop, WinID, Version
+
 OnExit("FadeOutGUI")
-
-global settings:=[], breakLoop, Version
-
 TrayMenu()
 LoadSettings("%APPDATA%\WSNHapps\Jump Launcher")
 HandleArgs()
-FadeInGUI()
+WinID := FadeInGUI()
 Hotkeys("Up", "InsertHistory")
 Hotkeys("Up", "DeadEnd", "Jump Launcher Settings")
 
@@ -319,3 +320,4 @@ inputLookup:
 #Include <ShortcutReplace>
 #Include <showLabel>
 #Include <TrayMenu>
+#Include <TrayTip>

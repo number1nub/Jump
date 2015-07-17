@@ -4,7 +4,7 @@ FadeInGUI(instant:="") {
 	Gui, Font, % "s11 w550 c" settings.TextColor, % settings.Font
 	Gui +LastFound +AlwaysOnTop -Caption +ToolWindow +Border +hwndhwnd
 	
-	Gui, Add, Text, % "w550 gmainGuiClick center c" settings.TextColor " w" settings.guiWidth,
+	Gui, Add, Text, % "w550 gmainGuiClick center hwndInputHwnd vInputTxt c" settings.TextColor " w" settings.guiWidth,
 	Winset, Transparent, % settings.Transparency
 	
 	if (settings.FadeOnShow && !instant) {

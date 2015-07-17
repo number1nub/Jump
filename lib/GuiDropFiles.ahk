@@ -3,7 +3,7 @@ GuiDropFiles(hwnd, files) {
 	IniRead, shortcut, % settings.cfgPath, shortcuts, %str%
 	if (shortcut="ERROR") {
 		if (str) {
-			GuiControl,, Static1, ???
+			SetTxt("???")
 			sleep 400
 		}
 		ExitApp

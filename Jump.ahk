@@ -3,15 +3,12 @@ SetBatchLines, -1
 SetControlDelay, 0
 SetTitleMatchMode, 2
 SetWorkingDir, %A_ScriptDir%
-OnExit("FadeOutGUI")
-
 
 global settings:=[], breakLoop, WinID, Version, InputTxt, InputHwnd, str
 
-
 TrayMenu()
-LoadSettings("%APPDATA%\WSNHapps\Jump Launcher")
-HandleArgs()
+LoadSettings()
+OnExit("FadeOutGUI")
 WinID := FadeInGUI()
 Hotkeys("Up", "InsertHistory")
 Hotkeys("Up", "DeadEnd", "Jump Launcher Settings")
@@ -19,7 +16,6 @@ Hotkeys("Up", "DeadEnd", "Jump Launcher Settings")
 loop
 	InputChar()
 until breakLoop
-
 GoSub, evaluate
 ExitApp
 
@@ -42,7 +38,6 @@ ExitApp
 #Include lib\GetTxt.ahk
 #Include lib\GuiContextMenu.ahk
 #Include lib\GuiDropFiles.ahk
-#Include lib\HandleArgs.ahk
 #Include lib\Hotkeys.ahk
 #Include lib\IncrementWidth.ahk
 #Include lib\InputChar4Lookup.ahk

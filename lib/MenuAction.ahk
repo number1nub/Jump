@@ -4,7 +4,7 @@ MenuAction() {
 		Run, % A_ScriptFullPath
 		ExitApp
 	}
-	else if (A_ThisMenuItem = "Open the User Settings File") {
+	else if (A_ThisMenuItem = "Open Settings.ini File") {
 		Run, % "*edit " settings.cfgPath
 		ExitApp
 	}

@@ -1,3 +1,4 @@
+#NoTrayIcon
 #SingleInstance, Ignore
 SetBatchLines, -1
 SetControlDelay, 0

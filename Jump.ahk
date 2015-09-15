@@ -1,9 +1,9 @@
 #NoTrayIcon
 #SingleInstance, Ignore
-SetBatchLines, -1
-SetControlDelay, 0
-SetTitleMatchMode, 2
 SetWorkingDir, %A_ScriptDir%
+SetTitleMatchMode, 2
+SetControlDelay, 0
+SetBatchLines, -1
 
 global settings:=[], breakLoop, WinID, Version, InputTxt, InputHwnd, str
 

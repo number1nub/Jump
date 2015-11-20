@@ -46,17 +46,16 @@ EditSettings(ProgName, Inifile, OwnedBy=0, DisableGui=0, HelpText=0) {
 		if (!CurrLine)
 			Continue
 		if (CurrLine.Sub(1, 1) = ";") {
-			chk2 := CurrLine.Sub(1, CurrLength+2)
-			Des := CurrLine.Sub(CurrLength+3)
-			;~ chk2 := SubStr(CurrLine, 1, CurrLength+2)
-			;~ Des := SubStr(CurrLine, CurrLength+3)
+			chk2:=CurrLine.Sub(1, CurrLength+2), Des:=CurrLine.Sub(CurrLength+3)
 			if (%CurrID%Sec=False && ";" CurrKey " "=chk2) {
-				if (InStr(Des, "Type: ") = 1) {
-					Typ:=SubStr(Des, 7), Des:=""
-					if (InStr(Typ, "DropDown ") = 1)
-						Format:=SubStr(Typ, 10),%CurrID%For:=Format, Typ:="DropDown", Des:=""
-					else if (InStr(Typ, "DateTime") = 1)
-						Format:=Trim(SubStr(Typ, 10))?SubStr(Typ, 10):"dddd MMMM d, yyyy HH:mm:ss tt",%CurrID%For:=Format, Typ:="DateTime", Des:=""
+				if (Des.InStr("Type: ") = 1) {
+					Typ:=Des.Sub(7), Des:=""
+					if (Typ.InStr("DropDown ") = 1)
+						Format:=Typ.Sub(10), %CurrID%For:=Format, Typ:="DropDown", Des:=""
+					else if (Typ.InStr("DateTime") = 1) {
+						Format := Trim(Typ.Sub(10)) ? Typ.Sub(10) : "dddd MMMM d, yyyy HH:mm:ss tt"
+						%CurrID%For:=Format, Typ:="DateTime", Des:=""
+					}
 					%CurrID%Typ := Typ
 				}
 				else if (InStr(Des,"Default: ") = 1)	;Default value

@@ -1,7 +1,7 @@
-LoadSettings(fPath="") {
+LoadSettings(fPath:="") {
 	initW  := 96
 	incPix := 8
-	dir    := ExpandEnv(GetConfigDir(fPath ? fPath:"", fPath ? 1:""))
+	dir    := ExpandEnv(fPath ? GetConfigDir(fPath):GetConfigDir())
 	
 	settings := { cfgDir:   dir
 				, cfgPath:  dir "\Settings.ini"

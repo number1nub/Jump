@@ -3,7 +3,7 @@ CreateConfig() {
 		if (!FileExist(settings.cfgDir))
 			FileCreateDir, % settings.cfgDir
 		if (A_IsCompiled)
-			FileInstall, Template.ini, % settings.cfgPath
+			FileInstall, Template.ini, % settings.cfgDir
 		else {
 			FileRead, tmp, Template.ini
 			FileAppend, %tmp%, % settings.cfgPath

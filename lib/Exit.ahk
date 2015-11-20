@@ -1,3 +1,0 @@
-Exit(reason) {
-	ExitApp
-}

@@ -41,8 +41,8 @@ ExitApp
 #Include <GuiDropFiles>
 #Include <Hotkeys>
 #Include <IncrementWidth>
-#Include <InputChar4Lookup>
 #Include <InputChar>
+#Include <InputChar4Lookup>
 #Include <InputLookup>
 #Include <InsertHistory>
 #Include <InvBase64>
